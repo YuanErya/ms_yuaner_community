@@ -27,8 +27,14 @@
         <java.version>1.8</java.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <spring-cloud.version>Hoxton.SR10</spring-cloud.version>
-
-
+        <mysql.version>8.0.30</mysql.version>
+        <fastjson.version>1.2.75</fastjson.version>
+        <hutool.version>5.5.7</hutool.version>
+        <jwt.version>0.9.1</jwt.version>
+        <pool2.version>2.11.1</pool2.version>
+        <emoji-java.version>5.1.1</emoji-java.version>
+        <yaml.version>2.3.9.RELEASE</yaml.version>
+        <bean.version>6.2.4.Final</bean.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +51,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
                 <scope>runtime</scope>
             </dependency>
             <!--mybatis-->
@@ -53,6 +60,53 @@
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+
+            <!--jjwt-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <version>${jwt.version}</version>
+            </dependency>
+            <!--emoji-java-->
+            <dependency>
+                <groupId>com.vdurmont</groupId>
+                <artifactId>emoji-java</artifactId>
+                <version>${emoji-java.version}</version>
+            </dependency>
+            <!-- lettuce pool 缓存连接池-->
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${pool2.version}</version>
+            </dependency>
+            <!--HuTool-->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <!--fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <!--yaml-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${yaml.version}</version>
+                <optional>true</optional>
+            </dependency>
+
+            <!--bean validator-->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${bean.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
     <dependencies>

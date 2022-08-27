@@ -8,11 +8,13 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.yuanerya</groupId>
-    <artifactId>question-service</artifactId>
+    <artifactId>answer-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>question-service</name>
+    <name>answer-service</name>
     <description>Demo project for Spring Boot</description>
-
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -78,17 +80,19 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-        <!--yaml-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <!--emoji-java-->
         <dependency>
             <groupId>com.vdurmont</groupId>
             <artifactId>emoji-java</artifactId>
+        </dependency>
+
+
+        <!--yaml-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <!--bean validator-->
