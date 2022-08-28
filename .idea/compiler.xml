@@ -9,15 +9,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="question-service" />
         <module name="user-service" />
-        <module name="comment-service" />
-        <module name="answer-service" />
+        <module name="feign-api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="answer-service" target="1.8" />
+      <module name="comment-service" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="answer-service" options="-parameters" />
       <module name="comment-service" options="-parameters" />
+      <module name="feign-api" options="-parameters" />
       <module name="question-service" options="-parameters" />
       <module name="user-service" options="-parameters" />
     </option>

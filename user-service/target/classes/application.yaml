@@ -11,8 +11,9 @@ spring:
     password: thf20021219
     url: jdbc:mysql://localhost:3306/ms_yuaner_community_user?useUnicode=true&allowMultiQueries=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=GMT%2B8
     type: com.zaxxer.hikari.HikariDataSource
-
-logging:
-  level:
-    root: info
-    com.douyuehan.doubao: debug
+  application:
+    name: userservice
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

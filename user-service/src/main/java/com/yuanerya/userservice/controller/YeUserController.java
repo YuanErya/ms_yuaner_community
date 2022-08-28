@@ -1,11 +1,12 @@
 package com.yuanerya.userservice.controller;
+import cn.yuanerya.feign.common.api.ApiResult;
+import cn.yuanerya.feign.jwt.JwtUtil;
+import cn.yuanerya.feign.model.dto.LoginDTO;
+import cn.yuanerya.feign.model.dto.RegisterDTO;
 
-import com.yuanerya.userservice.common.api.ApiResult;
-import com.yuanerya.userservice.jwt.JwtUtil;
-import com.yuanerya.userservice.model.dto.LoginDTO;
-import com.yuanerya.userservice.model.dto.RegisterDTO;
-import com.yuanerya.userservice.model.entity.YeUser;
 //import com.yuanerya.userservice.model.vo.FootPrintVO;
+import cn.yuanerya.feign.model.entity.YeUser;
+import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.yuanerya.userservice.service.IYeUserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.yuanerya.userservice.jwt.JwtUtil.HEADER_STRING;
+import static cn.yuanerya.feign.jwt.JwtUtil.HEADER_STRING;
 
 
 @RestController
@@ -71,13 +72,13 @@ public class YeUserController {
      * @param token 通过Header获取到tokren,进行解析得到用户名根据UserName再到数据库中进行查询，获取到用户ID
      * @return 返回vo
      */
-    /**@GetMapping("/getFootprint")
+    @GetMapping("/getFootprint")
     public ApiResult<FootPrintVO> getFootprint(@RequestHeader(value = HEADER_STRING) String token){
         String userName = JwtUtil.parseToken(token);
         String userId=iYeUserService.getYeUserByUsername(userName).getId();
         return ApiResult.success(iYeUserService.getFootprint(userId));
     }
-    **/
+
 
     /**
      * 注销登录
@@ -94,15 +95,17 @@ public class YeUserController {
      * @return 校验成功则返回用户名
      */
     @GetMapping("/checkUser")
-    public ApiResult<String> checkUser(@RequestHeader(value = HEADER_STRING) String token){
+    public ApiResult<YeUser> checkUser(@RequestHeader(value = HEADER_STRING) String token){
         String userName;
+        YeUser user;
         try {
             userName = JwtUtil.parseToken(token);
+            user = iYeUserService.getYeUserByUsername(userName);
         }
         catch(Exception e){
             return ApiResult.failed("非法用户，校验失败");
         }
-        return ApiResult.success(userName,"校验身份成功");
+        return ApiResult.success(user,"校验身份成功");
     }
 
 }

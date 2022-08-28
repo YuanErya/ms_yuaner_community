@@ -1,7 +1,8 @@
 package com.yuanerya.userservice.mapper;
 
+import cn.yuanerya.feign.model.entity.YeUser;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.yuanerya.userservice.model.entity.YeUser;
+
 import org.springframework.stereotype.Repository;
 
 @Repository

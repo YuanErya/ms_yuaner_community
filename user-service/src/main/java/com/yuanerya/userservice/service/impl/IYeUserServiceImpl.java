@@ -1,13 +1,18 @@
 package com.yuanerya.userservice.service.impl;
 
+import cn.yuanerya.feign.model.dto.LoginDTO;
+import cn.yuanerya.feign.model.dto.RegisterDTO;
+import cn.yuanerya.feign.model.entity.YeAnswer;
+import cn.yuanerya.feign.model.entity.YeComment;
+import cn.yuanerya.feign.model.entity.YeQuestion;
+import cn.yuanerya.feign.model.entity.YeUser;
+import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yuanerya.userservice.common.exception.ApiAsserts;
-import com.yuanerya.userservice.jwt.JwtUtil;
+import cn.yuanerya.feign.common.exception.ApiAsserts;
+import cn.yuanerya.feign.jwt.JwtUtil;
 import com.yuanerya.userservice.mapper.YeUserMapper;
-import com.yuanerya.userservice.model.dto.LoginDTO;
-import com.yuanerya.userservice.model.dto.RegisterDTO;
-import com.yuanerya.userservice.model.entity.YeUser;
+
 import com.yuanerya.userservice.service.IYeUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,5 +83,27 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
     @Override
     public YeUser getYeUserByUsername(String username) {
         return yeUserMapper.selectOne(new LambdaQueryWrapper<YeUser>().eq(YeUser::getUsername, username));
+    }
+
+    /**
+     * 用户可以获取自己的所有问题、所有回答、所有评论。
+     * @param userId 获取到用户的ID
+     * @return
+     */
+    @Override
+    public FootPrintVO getFootprint(String userId) {
+
+
+
+        FootPrintVO footprint = new FootPrintVO();
+       /** footprint.setQuestion(yeQuestionMapper.selectList(
+                new LambdaQueryWrapper<YeQuestion>().eq(YeQuestion::getUserId,userId)));
+        footprint.setAnswer(yeAnswerMapper.selectList(
+                new LambdaQueryWrapper<YeAnswer>().eq(YeAnswer::getUserId,userId)));
+        footprint.setComment(yeCommentMapper.selectList(
+                new LambdaQueryWrapper<YeComment>().eq(YeComment::getUserId,userId)));
+
+        **/
+        return footprint;
     }
 }

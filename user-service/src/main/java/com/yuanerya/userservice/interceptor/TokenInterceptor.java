@@ -1,7 +1,7 @@
 package com.yuanerya.userservice.interceptor;
 
 
-import com.yuanerya.userservice.jwt.JwtUtil;
+import cn.yuanerya.feign.jwt.JwtUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
