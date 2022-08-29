@@ -3,8 +3,10 @@ package com.yuanerya.questionservice.service.impl;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.AnswerAndCommentDTO;
 import cn.yuanerya.feign.model.entity.YeAnswer;
+import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vdurmont.emoji.EmojiParser;
 
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> implements IYeAnswerService {
@@ -93,5 +96,16 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
             return ApiResult.failed("操作失败");
         }
         return ApiResult.success("修改成功，修改的回答为：" + answer_id);
+    }
+
+    /**
+     * 根据用户的ID查询该用户所发布的全部的回答
+     * @return
+     */
+
+    @Override
+    public List<YeAnswer> getMyAnswersByUserId(String user_id) {
+        return yeAnswerMapper.selectList(
+                new LambdaQueryWrapper<YeAnswer>().eq(YeAnswer::getUserId,user_id));
     }
 }

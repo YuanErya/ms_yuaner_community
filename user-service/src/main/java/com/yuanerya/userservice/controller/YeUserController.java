@@ -3,8 +3,6 @@ import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.jwt.JwtUtil;
 import cn.yuanerya.feign.model.dto.LoginDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
-
-//import com.yuanerya.userservice.model.vo.FootPrintVO;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.yuanerya.userservice.service.IYeUserService;
@@ -74,9 +72,8 @@ public class YeUserController {
      */
     @GetMapping("/getFootprint")
     public ApiResult<FootPrintVO> getFootprint(@RequestHeader(value = HEADER_STRING) String token){
-        String userName = JwtUtil.parseToken(token);
-        String userId=iYeUserService.getYeUserByUsername(userName).getId();
-        return ApiResult.success(iYeUserService.getFootprint(userId));
+
+        return ApiResult.success(iYeUserService.getFootprint(token));
     }
 
 
@@ -92,7 +89,7 @@ public class YeUserController {
     /**
      * 校验用户的token是为为可用
      * @param token
-     * @return 校验成功则返回用户名
+     * @return 校验成功则返回用户实体类
      */
     @GetMapping("/checkUser")
     public ApiResult<YeUser> checkUser(@RequestHeader(value = HEADER_STRING) String token){
@@ -106,6 +103,12 @@ public class YeUserController {
             return ApiResult.failed("非法用户，校验失败");
         }
         return ApiResult.success(user,"校验身份成功");
+    }
+
+    @GetMapping("getUserById/{user_id}")
+    public ApiResult<YeUser> getUserById(@PathVariable("user_id")String user_id){
+        YeUser user=iYeUserService.getById(user_id);
+        return ApiResult.success(user);
     }
 
 }

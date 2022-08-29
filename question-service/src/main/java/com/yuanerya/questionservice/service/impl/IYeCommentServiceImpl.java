@@ -3,8 +3,10 @@ package com.yuanerya.questionservice.service.impl;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.AnswerAndCommentDTO;
 import cn.yuanerya.feign.model.entity.YeComment;
+import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vdurmont.emoji.EmojiParser;
 
@@ -15,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class IYeCommentServiceImpl extends ServiceImpl<YeCommentMapper, YeComment> implements IYeCommentService {
@@ -93,6 +96,18 @@ public class IYeCommentServiceImpl extends ServiceImpl<YeCommentMapper, YeCommen
             return ApiResult.failed("操作失败");
         }
         return ApiResult.success("修改成功，修改的评论为：" + comment_id);
+    }
+
+
+    /**
+     * 根据用户的ID查询该用户所发布的全部的评论
+     * @param user_id
+     * @return
+     */
+    @Override
+    public List<YeComment> getMyCommentsByUserId(String user_id) {
+        return yeCommentMapper.selectList(
+                new LambdaQueryWrapper<YeComment>().eq(YeComment::getUserId,user_id));
     }
 
 }

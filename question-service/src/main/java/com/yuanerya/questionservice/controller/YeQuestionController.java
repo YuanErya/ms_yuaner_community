@@ -10,14 +10,15 @@ import cn.yuanerya.feign.model.entity.YeAnswer;
 import cn.yuanerya.feign.model.entity.YeComment;
 import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
+import cn.yuanerya.feign.model.vo.FootPrintVO;
 import cn.yuanerya.feign.model.vo.QuestionVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yuanerya.questionservice.service.IYeAnswerService;
 import com.yuanerya.questionservice.service.IYeCommentService;
 import com.yuanerya.questionservice.service.IYeQuestionService;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
+import java.util.List;
 
 import static cn.yuanerya.feign.jwt.JwtUtil.HEADER_STRING;
 
@@ -42,9 +43,9 @@ public class YeQuestionController {
      * @return
      */
     @GetMapping("/list")
-    public ApiResult<Page<QuestionVO>> list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
+    public ApiResult<List<QuestionVO>> list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                             @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        Page<QuestionVO> pageList = iYeQuestionService.getPage(pageNo, pageSize);
+        List<QuestionVO> pageList = iYeQuestionService.getPage(pageNo, pageSize);
         return ApiResult.success(pageList);
     }
 
@@ -183,6 +184,21 @@ public class YeQuestionController {
                                    @RequestBody AnswerAndCommentDTO dto){
         String user_id = userClient.checkUser(token).getData().getId();
         return iYeCommentService.checkAndUpdate(comment_id,user_id,dto);
+    }
+    /**
+     * 获取传来的用户的token信息解析出来用户，查询该用户
+     * 所发布的问题，回答和评论
+     * @param token 通过Header获取到tokren,进行解析得到用户名根据UserName再到数据库中进行查询，获取到用户ID
+     * @return 返回vo
+     */
+    @GetMapping("/getUserAll")
+    public  ApiResult<FootPrintVO> getUserQuestion(@RequestHeader(value = HEADER_STRING) String token){
+        String user_id = userClient.checkUser(token).getData().getId();
+        FootPrintVO footPrintVO=new FootPrintVO();
+        footPrintVO.setQuestion(iYeQuestionService.getMyQuestionsByUserId(user_id));
+        footPrintVO.setAnswer(iYeAnswerService.getMyAnswersByUserId(user_id));
+        footPrintVO.setComment(iYeCommentService.getMyCommentsByUserId(user_id));
+        return ApiResult.success(footPrintVO);
     }
 
 }

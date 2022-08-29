@@ -1,15 +1,15 @@
 package com.yuanerya.questionservice.service.impl;
 
+import cn.yuanerya.feign.clients.UserClient;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.CreateQuestionDTO;
 import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.QuestionVO;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vdurmont.emoji.EmojiParser;
-
 import com.yuanerya.questionservice.mapper.YeAnswerMapper;
 import com.yuanerya.questionservice.mapper.YeCommentMapper;
 import com.yuanerya.questionservice.mapper.YeQuestionMapper;
@@ -18,7 +18,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQuestion> implements IYeQuestionService {
@@ -29,6 +33,8 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
     private YeAnswerMapper yeAnswerMapper;
     @Autowired
     private YeCommentMapper yeCommentMapper;
+    @Autowired
+    private UserClient userClient;
 
     /**
      * 分页查询
@@ -36,10 +42,31 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
      * @param pageSize
      * @return
      */
-    public Page<QuestionVO> getPage(Integer pageNo, Integer pageSize){
+
+    public List<QuestionVO> getPage(Integer pageNo, Integer pageSize){
         Page page=new Page(pageNo,pageSize);
-        yeQuestionMapper.getPage(page);
-        return page;
+        yeQuestionMapper.selectPage(page,null);
+        List<YeQuestion> list=page.getRecords();
+        Iterator<YeQuestion> iterator=list.iterator();
+        List<QuestionVO> listVo=new ArrayList<>();
+        while(iterator.hasNext()){
+            YeQuestion yq=iterator.next();
+            YeUser user=userClient.getUserById(yq.getUserId()).getData();
+            QuestionVO questionVO=QuestionVO.builder()
+                    .id(yq.getId())
+                    .userId(yq.getUserId())
+                    .title(yq.getTitle())
+                    .content(yq.getContent())
+                    .answerNum(yq.getAnswerNum())
+                    .createTime(yq.getCreateTime())
+                    .modifyTime(yq.getModifyTime())
+                    .alias(user.getAlias())
+                    .username(user.getUsername())
+                    .build();
+            listVo.add(questionVO);
+        }
+
+        return listVo;
     }
 
     /**
@@ -112,5 +139,16 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
         }
         return ApiResult.success("修改成功，修改的问题为：" + question_id);
     }
+
+    /**
+     * 根据用户的ID查询该用户所发布的全部的问题
+     * @param user_id
+     * @return
+     */
+    @Override
+    public List<YeQuestion> getMyQuestionsByUserId(String user_id) {
+        return yeQuestionMapper.selectList(
+                new LambdaQueryWrapper<YeQuestion>().eq(YeQuestion::getUserId,user_id));
     }
+}
 

@@ -4,8 +4,11 @@ package com.yuanerya.questionservice.service;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.AnswerAndCommentDTO;
 import cn.yuanerya.feign.model.entity.YeComment;
+import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 public interface IYeCommentService extends IService<YeComment> {
     /**
@@ -34,4 +37,11 @@ public interface IYeCommentService extends IService<YeComment> {
      * @return
      */
     ApiResult checkAndUpdate(String comment_id,String user_id,AnswerAndCommentDTO dto);
+
+    /**
+     * 根据用户的id进行查询用户的全部评论
+     * @param user_id
+     * @return
+     */
+    List<YeComment> getMyCommentsByUserId(String user_id);
 }

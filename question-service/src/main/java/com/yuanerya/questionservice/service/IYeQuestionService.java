@@ -9,6 +9,8 @@ import cn.yuanerya.feign.model.vo.QuestionVO;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 public interface IYeQuestionService extends IService<YeQuestion> {
     /**
      * 分页查询
@@ -16,7 +18,7 @@ public interface IYeQuestionService extends IService<YeQuestion> {
      * @param pageSize
      * @return
      */
-    Page<QuestionVO> getPage(Integer pageNo, Integer pageSize);
+    List<QuestionVO> getPage(Integer pageNo, Integer pageSize);
 
     /**
      * 发布帖子
@@ -42,4 +44,11 @@ public interface IYeQuestionService extends IService<YeQuestion> {
      * @return
      */
     ApiResult checkAndUpdate(String question_id,String user_id, CreateQuestionDTO dto);
+
+    /**
+     * 根据用户的id进行查询用户的全部问题
+      * @param user_id
+     * @return
+     */
+    List<YeQuestion> getMyQuestionsByUserId(String user_id);
 }

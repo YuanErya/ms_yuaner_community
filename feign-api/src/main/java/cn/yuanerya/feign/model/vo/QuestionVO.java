@@ -1,6 +1,7 @@
 package cn.yuanerya.feign.model.vo;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.Date;
 //用于列表查询时格式化输出
 @Data
 @NoArgsConstructor
+@Builder
 @AllArgsConstructor
 public class QuestionVO implements Serializable {
     private static final long serialVersionUID = -261082150965211545L;

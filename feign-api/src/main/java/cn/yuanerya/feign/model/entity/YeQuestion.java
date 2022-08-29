@@ -48,7 +48,7 @@ public class YeQuestion implements Serializable {
      */
     @TableField("answer_num")
     @Builder.Default
-    private Integer comments = 0;
+    private Integer answerNum = 0;
 
 
     /**

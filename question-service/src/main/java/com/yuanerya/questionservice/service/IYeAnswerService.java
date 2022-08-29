@@ -4,8 +4,11 @@ package com.yuanerya.questionservice.service;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.AnswerAndCommentDTO;
 import cn.yuanerya.feign.model.entity.YeAnswer;
+import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 public interface IYeAnswerService extends IService<YeAnswer> {
     /**
@@ -34,4 +37,11 @@ public interface IYeAnswerService extends IService<YeAnswer> {
      * @return
      */
     ApiResult checkAndUpdate(String answer_id, String user_id,AnswerAndCommentDTO dto);
+
+    /**
+     * 根据用户的id进行查询用户的全部问题
+     * @param user_id
+     * @return
+     */
+    List<YeAnswer> getMyAnswersByUserId(String user_id);
 }

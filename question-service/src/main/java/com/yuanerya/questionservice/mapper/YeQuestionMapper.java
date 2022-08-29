@@ -16,6 +16,6 @@ public interface YeQuestionMapper extends BaseMapper<YeQuestion> {
      * @param page
      * @return
      */
-    Page<QuestionVO> getPage(@Param("page") Page<QuestionVO> page);
+   // Page<QuestionVO> getPage(@Param("page") Page<QuestionVO> page);
 
 }
