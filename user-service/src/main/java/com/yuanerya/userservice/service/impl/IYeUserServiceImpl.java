@@ -1,12 +1,12 @@
 package com.yuanerya.userservice.service.impl;
 
+import cn.yuanerya.feign.clients.FocusClient;
 import cn.yuanerya.feign.clients.QuestionClient;
+import cn.yuanerya.feign.common.api.ApiErrorCode;
+import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.LoginDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
-import cn.yuanerya.feign.model.entity.YeAnswer;
-import cn.yuanerya.feign.model.entity.YeComment;
-import cn.yuanerya.feign.model.entity.YeQuestion;
-import cn.yuanerya.feign.model.entity.YeUser;
+import cn.yuanerya.feign.model.entity.*;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -27,6 +27,8 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
     private YeUserMapper yeUserMapper;
     @Resource
     private QuestionClient questionClient;
+    @Resource
+    private FocusClient focusClient;
 
     /**
      * 注册
@@ -103,5 +105,44 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
         FootPrintVO footprint = new FootPrintVO();
         footprint = questionClient.getUserAll(token).getData();
         return footprint;
+    }
+
+    /**
+     * 关注
+     * @param user_id
+     * @param focused_id
+     * @return
+     */
+    @Override
+    public ApiResult<Integer> tofocus(String user_id, String focused_id) {
+        YeFocus foucs = focusClient.add(user_id, focused_id).getData();
+        YeUser user = yeUserMapper.selectById(focused_id);
+        if (foucs == null) {
+            return ApiResult.failed("当前对方粉丝数目："+user.getFansNum()+"请勿重复关注");
+        } else {
+            user.setFansNum(user.getFansNum() + 1);
+            yeUserMapper.updateById(user);
+            return ApiResult.success(user.getFansNum(), "关注成功");
+        }
+    }
+
+    /**
+     * 取消关注
+     * @param user_id
+     * @param focused_id
+     * @return
+     */
+    @Override
+    public ApiResult<Integer> removeFocus(String user_id, String focused_id) {
+        YeFocus foucs = focusClient.removeFocus(user_id, focused_id).getData();
+        YeUser user = yeUserMapper.selectById(focused_id);
+        if(foucs != null) {
+            user.setFansNum(user.getFansNum() -1);
+            yeUserMapper.updateById(user);
+            return ApiResult.success(user.getFansNum(),"成功取消关注");
+        }else{
+            return ApiResult.failed("当前对方粉丝数目："+user.getFansNum()+"您并未关注此人");
+        }
+
     }
 }

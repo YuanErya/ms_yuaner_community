@@ -12,7 +12,6 @@ import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
 import cn.yuanerya.feign.model.vo.QuestionVO;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yuanerya.questionservice.service.IYeAnswerService;
 import com.yuanerya.questionservice.service.IYeCommentService;
 import com.yuanerya.questionservice.service.IYeQuestionService;

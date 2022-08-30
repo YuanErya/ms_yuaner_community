@@ -38,8 +38,8 @@ public class YeUser implements Serializable {
     private String email;
 
     @Builder.Default
-    @TableField("score")
-    private Integer score = 0;
+    @TableField("fans_num")
+    private Integer fansNum = 0;
 
     @Builder.Default
     @TableField("introduction")

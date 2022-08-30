@@ -4,7 +4,6 @@ package com.yuanerya.questionservice.service;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.AnswerAndCommentDTO;
 import cn.yuanerya.feign.model.entity.YeAnswer;
-import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import com.baomidou.mybatisplus.extension.service.IService;
 

@@ -1,5 +1,6 @@
 package com.yuanerya.userservice.service;
 
+import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.LoginDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
 import cn.yuanerya.feign.model.entity.YeUser;
@@ -36,4 +37,20 @@ public interface IYeUserService extends IService<YeUser> {
      * @return 返回VO
      */
     FootPrintVO getFootprint(String token);
+
+    /**
+     * 关注功能
+     * @param user_id
+     * @param focused_id
+     * @return
+     */
+    ApiResult<Integer> tofocus(String user_id, String focused_id);
+
+    /**
+     * 取消关注
+     * @param user_id
+     * @param focused_id
+     * @return
+     */
+    ApiResult<Integer> removeFocus(String user_id, String focused_id);
 }

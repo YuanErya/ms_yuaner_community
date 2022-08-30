@@ -2,6 +2,9 @@ DROP DATABASE IF EXISTS ms_yuaner_community_question;
 CREATE DATABASE IF NOT EXISTS ms_yuaner_community_question;
 USE ms_yuaner_community_question;
 
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
 
 DROP TABLE IF EXISTS `ye_question`;
 CREATE TABLE `ye_question`  (
