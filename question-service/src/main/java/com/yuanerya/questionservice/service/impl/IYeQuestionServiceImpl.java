@@ -7,6 +7,7 @@ import cn.yuanerya.feign.model.entity.YeQuestion;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.QuestionVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.vdurmont.emoji.EmojiParser;
@@ -44,9 +45,7 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
      */
 
     public List<QuestionVO> getPage(Integer pageNo, Integer pageSize){
-        Page page=new Page(pageNo,pageSize);
-        yeQuestionMapper.selectPage(page,null);
-        List<YeQuestion> list=page.getRecords();
+        List<YeQuestion> list=yeQuestionMapper.selectPage(pageNo,pageSize);
         Iterator<YeQuestion> iterator=list.iterator();
         List<QuestionVO> listVo=new ArrayList<>();
         while(iterator.hasNext()){

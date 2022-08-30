@@ -7,7 +7,6 @@ import cn.yuanerya.feign.model.dto.RegisterDTO;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.yuanerya.userservice.service.IYeUserService;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

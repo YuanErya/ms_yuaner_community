@@ -43,8 +43,8 @@ public class YeQuestionController {
      */
     @GetMapping("/list")
     public ApiResult<List<QuestionVO>> list(@RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
-                                            @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        List<QuestionVO> pageList = iYeQuestionService.getPage(pageNo, pageSize);
+                                            @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+        List<QuestionVO> pageList = iYeQuestionService.getPage(pageNo-1, pageSize);
         return ApiResult.success(pageList);
     }
 

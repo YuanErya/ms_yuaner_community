@@ -9,8 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients(basePackages = "cn.yuanerya.feign.clients")
 @MapperScan("com.yuanerya.questionservice.mapper")
 public class QuestionServiceApplication {
-
-
     public static void main(String[] args) {
         SpringApplication.run(QuestionServiceApplication.class, args);
     }
