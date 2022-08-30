@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>feign-api</artifactId>
+    <artifactId>gateway</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -17,20 +17,17 @@
     </properties>
 
     <dependencies>
-
-
-
-        <!--feign-->
+        <!--nacos-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>2.2.9.RELEASE</version>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
 
-        <!--bean validator-->
+        <!--网关gateway-->
         <dependency>
-            <groupId>org.hibernate.validator</groupId>
-            <artifactId>hibernate-validator</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
+            <version>2.2.2.RELEASE</version>
         </dependency>
 
         <!--jjwt-->
@@ -39,13 +36,7 @@
             <artifactId>jjwt</artifactId>
         </dependency>
 
-        <!--mybatis-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
-            <version>${mybatis-plus.version}</version>
-        </dependency>
+
 
     </dependencies>
-
 </project>

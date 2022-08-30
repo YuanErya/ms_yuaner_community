@@ -5,7 +5,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -45,29 +44,4 @@ public class JwtUtil {
 
 
 
-    public static void validateTokenAndAddUserIdToHeader(HttpServletRequest request) {
-        String token = request.getHeader(HEADER_STRING);
-        if (token != null) {
-            // 解析token
-            try {
-                Map<String, Object> body = Jwts.parser()
-                        .setSigningKey(SECRET)
-                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                        .getBody();
-                return ;
-            } catch (Exception e) {
-                logger.info(e.getMessage());
-                throw new TokenValidationException(e.getMessage());
-            }
-        } else {
-            throw new TokenValidationException("Missing token");
-        }
-    }
-
-
-    static class TokenValidationException extends RuntimeException {
-        public TokenValidationException(String msg) {
-            super(msg);
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package com.yuanerya.userservice.interceptor;
+/**package com.yuanerya.userservice.interceptor;
 
 
 import cn.yuanerya.feign.jwt.JwtUtil;
@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
+//原来单体版本的登录拦截器，已经废弃
 //用于验证用户端所携带的token，判断是否登录
 @Component
 public class TokenInterceptor implements HandlerInterceptor {
@@ -69,3 +69,4 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
 }
+**/
