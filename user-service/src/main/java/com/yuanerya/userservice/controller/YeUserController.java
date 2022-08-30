@@ -143,7 +143,7 @@ public class YeUserController {
      * @param token
      * @return
      */
-    @Delete("/removeFocus/{focused_id}")
+    @DeleteMapping("/removeFocus/{focused_id}")
     ApiResult<Integer> removeFocus(@PathVariable("focused_id") String focused_id,
                                      @RequestHeader(value = HEADER_STRING) String token){
         String user_id = iYeUserService.getYeUserByUsername(JwtUtil.parseToken(token)).getId();
