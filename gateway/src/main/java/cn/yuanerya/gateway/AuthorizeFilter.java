@@ -1,19 +1,24 @@
 package cn.yuanerya.gateway;
 
 
+import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Jwts;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 
+import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
+import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
@@ -36,6 +41,7 @@ public class AuthorizeFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
+        ServerHttpResponse response = exchange.getResponse();
         //无需拦截的url
         if(needLogin(request.getPath().toString())){
             return chain.filter(exchange);
@@ -43,8 +49,7 @@ public class AuthorizeFilter implements GlobalFilter {
         String token = request.getHeaders().getFirst(HEADER_STRING);
         //如果传来的token为”“或者没传token
         if(token==null||token==""){
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);//设置状态码
-            return exchange.getResponse().setComplete();
+            return fail(exchange);
         }
         try{
             //对token进行解析
@@ -52,8 +57,7 @@ public class AuthorizeFilter implements GlobalFilter {
             //将解析出的信息加入到HEADER中
             request.mutate().header(USER_NAME,name).build();
         }catch(Exception e){
-            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);//设置状态码
-            return exchange.getResponse().setComplete();
+            return fail(exchange);
         }
         return chain.filter(exchange);
     }
@@ -91,5 +95,22 @@ public class AuthorizeFilter implements GlobalFilter {
                 .getBody();
             userName=String.valueOf(body.get(USER_NAME));
         return userName;
+    }
+
+    /**
+     * token校验失败，返回错误信息
+     * @param exchange
+     * @return
+     */
+
+    public static Mono<Void> fail(ServerWebExchange exchange) {
+        JSONObject resultJson = new JSONObject();
+        resultJson.put("code", 401);
+        resultJson.put("message", "请重新登陆授权");
+        resultJson.put("status", 401);
+        ServerHttpResponse response = exchange.getResponse();
+        byte[] bytes = JSONObject.toJSONBytes(resultJson);
+        DataBuffer buffer = response.bufferFactory().wrap(bytes);
+        return response.writeWith(Flux.just(buffer));
     }
 }
