@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static cn.yuanerya.feign.jwt.JwtUtil.HEADER_STRING;
+import static cn.yuanerya.feign.jwt.JwtUtil.USER_NAME;
 
 
 @RestController
@@ -57,12 +58,11 @@ public class YeUserController {
      * 进行token验证，验证成功后，通过Header获取到tokren,进行解析得到用户名
      * 根据UserName再到数据库中进行查询，获取到用户的全部信息
      *
-     * @param token
+     * @param userName
      * @return 用户信息
      */
     @GetMapping(value = "/info")
-    public ApiResult<YeUser> getUser(@RequestHeader(value = HEADER_STRING) String token) {
-        String userName = JwtUtil.parseToken(token);
+    public ApiResult<YeUser> getUser(@RequestHeader(value = USER_NAME) String userName) {
         YeUser user = iYeUserService.getYeUserByUsername(userName);
         return ApiResult.success(user);
     }
@@ -70,13 +70,13 @@ public class YeUserController {
     /**
      * 获取我所发布的问题，回答和评论
      *
-     * @param token 通过Header获取到tokren,进行解析得到用户名根据UserName再到数据库中进行查询，获取到用户ID
+     * @param userName 通过Header获取到tokren,进行解析得到用户名根据UserName再到数据库中进行查询，获取到用户ID
      * @return 返回vo
      */
     @GetMapping("/getFootprint")
-    public ApiResult<FootPrintVO> getFootprint(@RequestHeader(value = HEADER_STRING) String token) {
+    public ApiResult<FootPrintVO> getFootprint(@RequestHeader(value = USER_NAME) String userName) {
 
-        return ApiResult.success(iYeUserService.getFootprint(token));
+        return ApiResult.success(iYeUserService.getFootprint(userName));
     }
 
 
@@ -124,28 +124,50 @@ public class YeUserController {
     }
 
     /**
+     * 通过用户名获取 用户信息
+     * @param user_name
+     * @return
+     */
+    @GetMapping("/getUserByUserName/{user_name}")
+    ApiResult<YeUser> getUserByUserName(@PathVariable("user_name")String user_name){
+        YeUser user = iYeUserService.getYeUserByUsername(user_name);
+        return ApiResult.success(user);
+    }
+
+    /**
      * 添加关注
      * @param focused_id
-     * @param token
+     * @param userName
      * @return
      */
     @PutMapping("/tofocus/{focused_id}")
     public ApiResult<Integer> tofocus(@PathVariable("focused_id") String focused_id,
-                                      @RequestHeader(value = HEADER_STRING) String token) {
-        String user_id = iYeUserService.getYeUserByUsername(JwtUtil.parseToken(token)).getId();
+                                      @RequestHeader(value = USER_NAME) String userName) {
+        String user_id = iYeUserService.getYeUserByUsername(userName).getId();
         return iYeUserService.tofocus(user_id, focused_id);
     }
 
     /**
      * 取消关注
      * @param focused_id
-     * @param token
+     * @param userName
      * @return
      */
     @DeleteMapping("/removeFocus/{focused_id}")
     ApiResult<Integer> removeFocus(@PathVariable("focused_id") String focused_id,
-                                     @RequestHeader(value = HEADER_STRING) String token){
-        String user_id = iYeUserService.getYeUserByUsername(JwtUtil.parseToken(token)).getId();
+                                   @RequestHeader(value = USER_NAME) String userName){
+        String user_id = iYeUserService.getYeUserByUsername(userName).getId();
         return iYeUserService.removeFocus(user_id, focused_id);
+    }
+
+    /**
+     * 更新用户的获赞数
+     * @param user
+     * @return
+     */
+    @PutMapping("/updata/staredNum")
+    ApiResult updataStarNum(@Valid @RequestBody YeUser user){
+        iYeUserService.updateById(user);
+        return ApiResult.success();
     }
 }

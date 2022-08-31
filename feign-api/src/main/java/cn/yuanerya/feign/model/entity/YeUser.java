@@ -41,6 +41,13 @@ public class YeUser implements Serializable {
     @TableField("fans_num")
     private Integer fansNum = 0;
 
+    /**
+     * 获赞数目
+     */
+    @Builder.Default
+    @TableField("stared_num")
+    private Integer staredNum = 0;
+
     @Builder.Default
     @TableField("introduction")
     private String introduction = "这个人很神秘 ，暂时没有设置简介！";

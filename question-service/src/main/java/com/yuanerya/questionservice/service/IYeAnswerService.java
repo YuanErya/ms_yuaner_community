@@ -43,4 +43,22 @@ public interface IYeAnswerService extends IService<YeAnswer> {
      * @return
      */
     List<YeAnswer> getMyAnswersByUserId(String user_id);
+
+
+
+    /**
+     * 点赞功能
+     * @param user_id
+     * @param answer_id
+     * @return
+     */
+    ApiResult<Integer> tostar(String user_id, String answer_id);
+
+    /**
+     * 取消点赞
+     * @param user_id
+     * @param answer_id
+     * @return
+     */
+    ApiResult<Integer> removeStar(String user_id, String answer_id);
 }

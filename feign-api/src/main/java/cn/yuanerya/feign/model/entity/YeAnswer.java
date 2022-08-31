@@ -43,6 +43,12 @@ public class YeAnswer implements Serializable {
      */
     @TableField("question_id")
     private String questionId;
+    /**
+     * 点赞数目
+     */
+    @Builder.Default
+    @TableField("star_num")
+    private Integer starNum = 0;
 
     /**
      * 创建时间

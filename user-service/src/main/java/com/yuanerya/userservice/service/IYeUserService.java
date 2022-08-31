@@ -33,10 +33,10 @@ public interface IYeUserService extends IService<YeUser> {
 
     /**
      * 根据用户的Id在各个表中查询发表的记录
-     * @param token 获取到用户的ID
+     * @param userName 获取到用户的ID
      * @return 返回VO
      */
-    FootPrintVO getFootprint(String token);
+    FootPrintVO getFootprint(String userName);
 
     /**
      * 关注功能

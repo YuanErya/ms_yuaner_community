@@ -67,7 +67,7 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
 
     @Override
     public String login(LoginDTO dto) {
-        String token = null;
+        String token =null;
         try {
             LambdaQueryWrapper<YeUser> lqw = new LambdaQueryWrapper<>();
             lqw.eq(YeUser::getUsername, dto.getName());
@@ -77,7 +77,7 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
             }
             token = JwtUtil.generateToken(yeUser.getUsername());
         } catch (Exception e) {
-
+            return null;
         }
         return "Authorization:" + token;
     }
@@ -97,13 +97,13 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
     /**
      * 用户可以获取自己的所有问题、所有回答、所有评论。
      *
-     * @param token 获取到用户的ID
+     * @param userName 获取到用户的ID
      * @return
      */
     @Override
-    public FootPrintVO getFootprint(String token) {
+    public FootPrintVO getFootprint(String userName) {
         FootPrintVO footprint = new FootPrintVO();
-        footprint = questionClient.getUserAll(token).getData();
+        footprint = questionClient.getUserAll(userName).getData();
         return footprint;
     }
 
