@@ -51,4 +51,11 @@ public interface IYeQuestionService extends IService<YeQuestion> {
      * @return
      */
     List<YeQuestion> getMyQuestionsByUserId(String user_id);
+
+    /**
+     * 根据问题的id进行查询问题的详情
+     * @param question_id
+     * @return
+     */
+    QuestionVO getQuestion(String question_id);
 }

@@ -1,5 +1,7 @@
 package com.yuanerya.questionservice.service.impl;
 
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import cn.yuanerya.feign.clients.UserClient;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.CreateQuestionDTO;
@@ -16,6 +18,7 @@ import com.yuanerya.questionservice.mapper.YeCommentMapper;
 import com.yuanerya.questionservice.mapper.YeQuestionMapper;
 import com.yuanerya.questionservice.service.IYeQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +39,8 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
     private YeCommentMapper yeCommentMapper;
     @Autowired
     private UserClient userClient;
+    @Autowired
+    private StringRedisTemplate  stringRedisTemplate;
 
     /**
      * 分页查询
@@ -64,9 +69,43 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
                     .build();
             listVo.add(questionVO);
         }
-
         return listVo;
     }
+
+    /**
+     * 查寻某一个问题的 详细信息
+     * @param question_id
+     * @return
+     */
+    @Override
+    public QuestionVO getQuestion(String question_id){
+        String questionJson=stringRedisTemplate.opsForValue().get("cache:question:"+question_id);
+        //判断缓存中是否存在
+        if(StrUtil.isNotBlank(questionJson)){
+            QuestionVO question= JSONUtil.toBean(questionJson,QuestionVO.class);
+            return question;
+        }
+        YeQuestion yq=yeQuestionMapper.selectById(question_id);
+        //如果数据库中也查询不到
+        if(yq==null){
+            return null;
+        }
+    YeUser user=userClient.getUserById(yq.getUserId()).getData();
+    QuestionVO questionVO=QuestionVO.builder()
+            .id(yq.getId())
+            .userId(yq.getUserId())
+            .title(yq.getTitle())
+            .content(yq.getContent())
+            .answerNum(yq.getAnswerNum())
+            .createTime(yq.getCreateTime())
+            .modifyTime(yq.getModifyTime())
+            .alias(user.getAlias())
+            .username(user.getUsername())
+            .build();
+    stringRedisTemplate.opsForValue().set("cache:question:"+question_id,JSONUtil.toJsonStr(questionVO));
+    return questionVO;
+
+}
 
     /**
      * 创建一个新的问题

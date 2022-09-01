@@ -47,6 +47,17 @@ public class YeQuestionController {
         return ApiResult.success(pageList);
     }
 
+    @GetMapping("/getQuestion/{question_id}")
+    public ApiResult<QuestionVO> getQuestion (@PathVariable(value = "question_id") String question_id){
+
+        QuestionVO questionVO=iYeQuestionService.getQuestion(question_id);
+        if(questionVO==null){
+            return ApiResult.failed("暂无该问题数据");
+        }else{
+            return ApiResult.success(questionVO);
+        }
+    }
+
     /**
      * 创建问题
      *
