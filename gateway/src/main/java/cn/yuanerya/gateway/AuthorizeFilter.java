@@ -3,14 +3,15 @@ package cn.yuanerya.gateway;
 
 import com.alibaba.fastjson.JSONObject;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.annotation.Order;
 
 import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpStatus;
 
-import org.springframework.http.MediaType;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -22,15 +23,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @Order(1)
 public class AuthorizeFilter implements GlobalFilter {
 
-    public static final String SECRET = "ThisIsASecret";//please change to your own encryption secret.
+    public static final String SECRET = "ThisIsASecret";
+    public static final String CHECK="WhetherHaveBeenToGateway";
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
     public static final String USER_NAME = "userName";
@@ -38,12 +39,20 @@ public class AuthorizeFilter implements GlobalFilter {
     //用于匹配路径
     private static AntPathMatcher matcher = new AntPathMatcher();
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
         //无需拦截的url
+        String check=generateToken("create");
         if(needLogin(request.getPath().toString())){
+            //加入生成经过网关验证的头
+            request.mutate().header("CheckGateway",check).build();
+            //讲生成的验证同时加入缓存
+            stringRedisTemplate.opsForValue().set("cache:gateway:",check,60, TimeUnit.SECONDS);
             return chain.filter(exchange);
         }
         String token = request.getHeaders().getFirst(HEADER_STRING);
@@ -59,6 +68,10 @@ public class AuthorizeFilter implements GlobalFilter {
         }catch(Exception e){
             return fail(exchange);
         }
+        //加入生成经过网关验证的头
+        request.mutate().header("CheckGateway",check).build();
+        //讲生成的验证同时加入缓存
+        stringRedisTemplate.opsForValue().set("cache:gateway:",check,60, TimeUnit.SECONDS);
         return chain.filter(exchange);
     }
 
@@ -95,6 +108,23 @@ public class AuthorizeFilter implements GlobalFilter {
                 .getBody();
             userName=String.valueOf(body.get(USER_NAME));
         return userName;
+    }
+
+    /**
+     * 生成token,
+     * 此处生成的token是用于校验请求是否经过网关
+     * @param userId
+     * @return
+     */
+    public static String generateToken(String userId) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put(USER_NAME, userId);
+        String jwt = Jwts.builder()
+                .setClaims(map)
+                .setExpiration(new Date(System.currentTimeMillis() + 3600_000_00L))//设置了登录超过期限100H
+                .signWith(SignatureAlgorithm.HS512,CHECK)
+                .compact();
+        return jwt; //jwt前面一般都会加Bearer
     }
 
     /**

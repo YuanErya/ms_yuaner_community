@@ -1,7 +1,8 @@
-/**package com.yuanerya.userservice.interceptor;
+package com.yuanerya.focusservice.interceptor;
 
-
-import cn.yuanerya.feign.jwt.JwtUtil;
+import cn.hutool.core.util.StrUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
@@ -14,22 +15,27 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//原来单体版本的登录拦截器，已经废弃
-//用于验证用户端所携带的token，判断是否登录
+//用于验证是否通过网关的拦截器
 @Component
-public class TokenInterceptor implements HandlerInterceptor {
+public class GateWayInterceptor implements HandlerInterceptor {
     private static final PathMatcher pathMatcher = new AntPathMatcher();
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response,Object o) throws IOException {
         try {
             if(isProtectedUrl(request)) {
-//                System.out.println(request.getMethod());
-                if(!request.getMethod().equals("OPTIONS")) {
-                    JwtUtil.validateTokenAndAddUserIdToHeader(request);
+                //取到网关验证
+                String check=request.getHeader("CheckGateway");
+                if(StrUtil.isNotBlank(check)){
+                if(check.equals(stringRedisTemplate.opsForValue().get("cache:gateway:"))){
                     return true;
-                }else{
-                    return true;
+                }
+                return false;
+                }
+                else{
+                    return false;
                 }
             }else{
                 return true;
@@ -54,10 +60,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     private boolean isProtectedUrl(HttpServletRequest request) {
         List<String> protectedPaths = new ArrayList<String>();
         //向list中添加需要保护拦截的请求
-        protectedPaths.add("/user/info");
-        protectedPaths.add("/user/getFootprint");
-        protectedPaths.add("/user/logout");
-        protectedPaths.add("/question/*");
+        protectedPaths.add("/**");
         boolean bFind = false;
         for( String passedPath : protectedPaths ) {
             bFind = pathMatcher.match(passedPath, request.getServletPath());
@@ -69,4 +72,3 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
 }
-**/

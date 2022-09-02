@@ -138,6 +138,11 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
         try {
             if(yeQuestionMapper.selectById(question_id).getUserId().equals(user_id)){
                 //检验操作者
+
+                //若存在缓存则删掉缓存
+                if(stringRedisTemplate.hasKey("cache:question:"+question_id)&&StrUtil.isNotBlank(stringRedisTemplate.opsForValue().get("cache:question:"+question_id))){
+                    stringRedisTemplate.delete("cache:question:"+question_id);
+                }
                 yeQuestionMapper.deleteById(question_id);
                 yeAnswerMapper.deleteByQuestionId(question_id);
                 yeCommentMapper.deleteByQuestionId(question_id);}
@@ -163,6 +168,12 @@ public class IYeQuestionServiceImpl extends ServiceImpl<YeQuestionMapper, YeQues
         try {
             if(yeQuestionMapper.selectById(question_id).getUserId().equals(user_id)) {
                 //检验操作者
+
+                //若存在缓存则删掉缓存
+                if(stringRedisTemplate.hasKey("cache:question:"+question_id)&&StrUtil.isNotBlank(stringRedisTemplate.opsForValue().get("cache:question:"+question_id))){
+                    stringRedisTemplate.delete("cache:question:"+question_id);
+                }
+
                 YeQuestion question=yeQuestionMapper.selectById(question_id);
                 question.setContent(dto.getContent());
                 question.setTitle(dto.getTitle());
