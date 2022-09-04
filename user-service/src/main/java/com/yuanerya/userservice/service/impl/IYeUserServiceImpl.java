@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implements IYeUserService {
@@ -150,9 +151,9 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
      */
     @Override
     public ApiResult<Integer> removeFocus(String user_id, String focused_id) {
-        YeFocus foucs = focusClient.removeFocus(user_id, focused_id).getData();
+        List<YeFocus> foucs = focusClient.removeFocus(user_id, focused_id).getData();
         YeUser user = yeUserMapper.selectById(focused_id);
-        if(foucs != null) {
+        if(foucs!=null&&foucs.size() != 0) {
             user.setFansNum(user.getFansNum() -1);
             yeUserMapper.updateById(user);
             return ApiResult.success(user.getFansNum(),"成功取消关注");

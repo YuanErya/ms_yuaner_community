@@ -8,6 +8,8 @@ import com.yuanerya.focusservice.service.IYeFocusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/focus")
@@ -41,9 +43,9 @@ public class YeFocusController {
      * @return
      */
     @DeleteMapping("/removeFocus/{user_id}/{focused_id}")
-    public ApiResult<YeFocus> removeFocus(@PathVariable("user_id") String user_id,
-                                          @PathVariable("focused_id") String focused_id) {
-        YeFocus yeFocus = iyeFocusService.removeFocus(user_id, focused_id);
+    public ApiResult<List<YeFocus>> removeFocus(@PathVariable("user_id") String user_id,
+                                                @PathVariable("focused_id") String focused_id) {
+        List<YeFocus> yeFocus = iyeFocusService.removeFocus(user_id, focused_id);
         if (yeFocus != null) {
             return ApiResult.success(yeFocus, "取消关注成功");
         } else {

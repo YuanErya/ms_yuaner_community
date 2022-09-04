@@ -20,8 +20,8 @@ public class IYeStarServiceImpl extends ServiceImpl<YeStarMapper,YeStar> impleme
     public YeStar add(String user_id, String answer_id) {
         LambdaQueryWrapper<YeStar> lqw = new LambdaQueryWrapper<>();
         lqw.eq(YeStar::getAnswerId, answer_id).eq(YeStar::getUserId, user_id);
-        YeStar yeStar= yeStarMapper.selectOne(lqw);
-        if (yeStar == null) {
+        List<YeStar> yeStar= yeStarMapper.selectList(lqw);
+        if (yeStar.size() == 0) {
             YeStar star = YeStar.builder()
                     .userId(user_id)
                     .answerId(answer_id)
@@ -35,15 +35,16 @@ public class IYeStarServiceImpl extends ServiceImpl<YeStarMapper,YeStar> impleme
     }
 
     @Override
-    public YeStar removeStar(String user_id, String answer_id) {
+    public List<YeStar> removeStar(String user_id, String answer_id) {
         LambdaQueryWrapper<YeStar> lqw = new LambdaQueryWrapper<>();
         lqw.eq(YeStar::getAnswerId, answer_id).eq(YeStar::getUserId, user_id);
-        YeStar yeStar= yeStarMapper.selectOne(lqw);
+        List<YeStar> yeStar= yeStarMapper.selectList(lqw);
         //上方代码是在校验当前关注是否已经被创建过
         if (yeStar == null) {
             return null;
         } else {
-            yeStarMapper.deleteById(yeStar.getId());
+            for(int i=0;i<yeStar.size();i++){
+                yeStarMapper.deleteById(yeStar.get(i).getId());}
             return yeStar;
         }
     }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
+
 
 @FeignClient("starservice")
 public interface StarClient {
@@ -16,7 +18,7 @@ public interface StarClient {
                                  @PathVariable("answer_id") String answer_id);
 
     @DeleteMapping("/star/removeStar/{user_id}/{answer_id}")
-    ApiResult<YeStar> removeStar(@PathVariable("user_id") String user_id,
-                                         @PathVariable("answer_id") String answer_id);
+    ApiResult<List<YeStar>> removeStar(@PathVariable("user_id") String user_id,
+                                       @PathVariable("answer_id") String answer_id);
 
 }

@@ -51,15 +51,16 @@ public class IYeFocusServiceImpl extends ServiceImpl<YeFocusMapper, YeFocus> imp
      * @return
      */
     @Override
-    public YeFocus removeFocus(String user_id, String focused_id) {
+    public List<YeFocus> removeFocus(String user_id, String focused_id) {
         LambdaQueryWrapper<YeFocus> lqw = new LambdaQueryWrapper<>();
         lqw.eq(YeFocus::getFocusedId, focused_id).eq(YeFocus::getUserId, user_id);
-        YeFocus yeFocus = yeFocusMapper.selectOne(lqw);
+        List<YeFocus> yeFocus = yeFocusMapper.selectList(lqw);
         //上方代码是在校验当前关注是否已经被创建过
-        if (yeFocus == null) {
+        if (yeFocus.size() == 0) {
             return null;
         } else {
-            yeFocusMapper.deleteById(yeFocus.getId());
+            for(int i=0;i<yeFocus.size();i++){
+            yeFocusMapper.deleteById(yeFocus.get(i).getId());}
             return yeFocus;
         }
     }

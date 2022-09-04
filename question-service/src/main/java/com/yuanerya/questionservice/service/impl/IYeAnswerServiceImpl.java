@@ -148,10 +148,10 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
      */
     @Override
     public ApiResult<Integer> removeStar(String user_id, String answer_id) {
-        YeStar star=starClient.removeStar(user_id, answer_id).getData();
+        List<YeStar> star=starClient.removeStar(user_id, answer_id).getData();
         YeUser user =userClient.getUserById(user_id).getData();
         YeAnswer answer =yeAnswerMapper.selectById(answer_id);
-        if(star != null) {
+        if(star!=null&&star.size() != 0) {
             answer.setStarNum(answer.getStarNum()-1);
             user.setStaredNum(user.getStaredNum()-1);
             yeAnswerMapper.updateById(answer);
