@@ -1,5 +1,6 @@
 package com.yuanerya.starservice.service.impl;
 
+import cn.yuanerya.feign.model.entity.YeFocus;
 import cn.yuanerya.feign.model.entity.YeStar;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class IYeStarServiceImpl extends ServiceImpl<YeStarMapper,YeStar> implements IYeStarService {
@@ -45,4 +47,6 @@ public class IYeStarServiceImpl extends ServiceImpl<YeStarMapper,YeStar> impleme
             return yeStar;
         }
     }
+
+
 }

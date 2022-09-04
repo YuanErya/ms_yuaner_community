@@ -37,14 +37,14 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
      * @return 将生成的用户信息返回给前端
      */
     @Override
-    public YeUser register(RegisterDTO dto) {
+    public ApiResult register(RegisterDTO dto) {
         //用户名和邮箱要与数据库中的已经存在的数据进行比对查重
         LambdaQueryWrapper<YeUser> lqw = new LambdaQueryWrapper<>();
         //判断名字和邮箱
         lqw.eq(YeUser::getUsername, dto.getName()).or().eq(YeUser::getEmail, dto.getEmail());
         YeUser yeUser = baseMapper.selectOne(lqw);
         if (yeUser != null) {
-            ApiAsserts.fail("账号或邮箱已存在");
+            return ApiResult.failed("账号或邮箱已存在");
         }
         YeUser registerUser = YeUser.builder()
                 .username(dto.getName())
@@ -55,7 +55,7 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
                 .status(true)
                 .build();
         yeUserMapper.insert(registerUser);
-        return registerUser;
+        return ApiResult.success(registerUser);
     }
 
     /**
@@ -92,6 +92,22 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
     @Override
     public YeUser getYeUserByUsername(String username) {
         return yeUserMapper.selectOne(new LambdaQueryWrapper<YeUser>().eq(YeUser::getUsername, username));
+    }
+
+    /**
+     * 核验点赞和关注数目，返回用户信息
+     * @param username
+     * @return
+     */
+    @Override
+    public YeUser getAndCheckUserByUsername(String username) {
+        YeUser user=getYeUserByUsername(username);
+        Integer fans_num=focusClient.checkNum(user.getId()).getData();
+        if(fans_num!=user.getFansNum()){
+            user.setFansNum(fans_num);
+            yeUserMapper.updateById(user);
+        }
+        return user;
     }
 
     /**

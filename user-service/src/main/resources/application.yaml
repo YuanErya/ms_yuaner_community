@@ -1,10 +1,6 @@
 server:
   port: 8081
 
-web:
-  domain: http://localhost
-
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -50,4 +50,9 @@ public class YeFocusController {
             return ApiResult.failed("查询到从未关注");
         }
     }
+
+    @GetMapping("checkNum/{user_id}")
+    public ApiResult<Integer> checkNum(@PathVariable ("user_id") String user_id){
+        return ApiResult.success(iyeFocusService.checkNum(user_id));
+    }
 }

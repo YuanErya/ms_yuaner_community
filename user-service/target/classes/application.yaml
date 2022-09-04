@@ -1,10 +1,6 @@
 server:
   port: 8081
 
-web:
-  domain: http://localhost
-
-
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -17,4 +13,4 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.49.89:8848
+        server-addr: localhost:8848

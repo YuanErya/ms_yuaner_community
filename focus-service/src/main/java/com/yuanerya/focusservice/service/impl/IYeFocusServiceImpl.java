@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class IYeFocusServiceImpl extends ServiceImpl<YeFocusMapper, YeFocus> implements IYeFocusService {
@@ -27,9 +28,9 @@ public class IYeFocusServiceImpl extends ServiceImpl<YeFocusMapper, YeFocus> imp
     public YeFocus add(String user_id, String focused_id) {
         LambdaQueryWrapper<YeFocus> lqw = new LambdaQueryWrapper<>();
         lqw.eq(YeFocus::getFocusedId, focused_id).eq(YeFocus::getUserId, user_id);
-        YeFocus yeFocus = yeFocusMapper.selectOne(lqw);
+        List<YeFocus> yeFocus = yeFocusMapper.selectList(lqw);
         //上方代码是在校验当前关注是否已经被创建过
-        if (yeFocus == null) {
+        if (yeFocus.size() == 0) {
             YeFocus focus = YeFocus.builder()
                     .userId(user_id)
                     .focusedId(focused_id)
@@ -61,5 +62,18 @@ public class IYeFocusServiceImpl extends ServiceImpl<YeFocusMapper, YeFocus> imp
             yeFocusMapper.deleteById(yeFocus.getId());
             return yeFocus;
         }
+    }
+
+    /**
+     * 校验被关注数目
+     * @param user_id 此处应用作被关注者查询
+     * @return
+     */
+    @Override
+    public Integer checkNum(String user_id) {
+        LambdaQueryWrapper<YeFocus> lqw = new LambdaQueryWrapper<>();
+        lqw.eq(YeFocus::getFocusedId,user_id);
+        List<YeFocus> list=yeFocusMapper.selectList(lqw);
+        return list.size();
     }
 }

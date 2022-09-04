@@ -16,4 +16,7 @@ public interface FocusClient {
     @DeleteMapping("/focus/removeFocus/{user_id}/{focused_id}")
     ApiResult<YeFocus> removeFocus(@PathVariable("user_id") String user_id,
                                    @PathVariable("focused_id") String focused_id);
+
+    @GetMapping("/focus/checkNum/{user_id}")
+    ApiResult<Integer> checkNum(@PathVariable ("user_id") String user_id);
 }

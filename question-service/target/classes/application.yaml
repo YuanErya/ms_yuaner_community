@@ -2,8 +2,6 @@
 server:
   port: 8082
 
-web:
-  domain: http://localhost
 
 spring:
   datasource:

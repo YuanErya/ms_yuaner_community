@@ -15,7 +15,7 @@ public interface IYeUserService extends IService<YeUser> {
      * @param dto
      * @return
      */
-    YeUser register(RegisterDTO dto);
+    ApiResult register(RegisterDTO dto);
 
     /**
      * 登录
@@ -30,6 +30,14 @@ public interface IYeUserService extends IService<YeUser> {
      * @return
      */
     YeUser getYeUserByUsername(String username);
+
+    /**
+     * 拉取用户信息，同时核验点赞数和关注数目是否为真
+     * @param username
+     * @return
+     */
+
+    YeUser getAndCheckUserByUsername(String username);
 
     /**
      * 根据用户的Id在各个表中查询发表的记录

@@ -32,11 +32,7 @@ public class YeUserController {
      */
     @PostMapping("/register")
     public ApiResult register(@Valid @RequestBody RegisterDTO dto) {
-        YeUser user = iYeUserService.register(dto);
-        if (user == null) {
-            return ApiResult.failed("账号注册失败！");
-        }
-        return ApiResult.success("账号注册成功！");
+        return iYeUserService.register(dto);
     }
 
     /**
@@ -63,7 +59,7 @@ public class YeUserController {
      */
     @GetMapping(value = "/info")
     public ApiResult<YeUser> getUser(@RequestHeader(value = USER_NAME) String userName) {
-        YeUser user = iYeUserService.getYeUserByUsername(userName);
+        YeUser user = iYeUserService.getAndCheckUserByUsername(userName);
         return ApiResult.success(user);
     }
 
