@@ -1,0 +1,12 @@
+com\yuanerya\questionservice\mapper\YeCommentMapper.class
+com\yuanerya\questionservice\controller\YeQuestionController.class
+com\yuanerya\questionservice\QuestionServiceApplication.class
+com\yuanerya\questionservice\service\IYeQuestionService.class
+com\yuanerya\questionservice\service\impl\IYeAnswerServiceImpl.class
+com\yuanerya\questionservice\mapper\YeAnswerMapper.class
+com\yuanerya\questionservice\service\IYeAnswerService.class
+com\yuanerya\questionservice\mapper\YeQuestionMapper.class
+com\yuanerya\questionservice\service\IYeCommentService.class
+com\yuanerya\questionservice\service\impl\IYeQuestionServiceImpl.class
+com\yuanerya\questionservice\service\impl\IYeCommentServiceImpl.class
+com\yuanerya\questionservice\interceptor\GateWayInterceptor.class

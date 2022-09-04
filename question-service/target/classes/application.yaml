@@ -15,4 +15,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848
+        server-addr: 47.98.49.89:8848
+  redis:
+    host: 47.98.49.89
+    password: thf20021219
+    port: 6378
