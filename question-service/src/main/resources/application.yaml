@@ -15,8 +15,15 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 47.98.49.89:8848
+        server-addr: localhost:8848
   redis:
     host: 47.98.49.89
     password: thf20021219
     port: 6378
+
+  rabbitmq:
+    host: 192.168.58.130
+    port: 5672
+    username: yuaner
+    password: thf20021219
+    virtual-host: /

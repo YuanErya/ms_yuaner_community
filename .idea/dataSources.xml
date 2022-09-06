@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="RDS" uuid="902dd0e4-2b31-404c-873c-04df7c81ed7e">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://rm-2vc7307rxg3bfg4rhno.mysql.cn-chengdu.rds.aliyuncs.com:3306</jdbc-url>
+    </data-source>
   </component>
 </project>

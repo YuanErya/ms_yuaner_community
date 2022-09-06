@@ -16,13 +16,16 @@ import com.vdurmont.emoji.EmojiParser;
 import com.yuanerya.questionservice.mapper.YeAnswerMapper;
 import com.yuanerya.questionservice.mapper.YeCommentMapper;
 import com.yuanerya.questionservice.service.IYeAnswerService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> implements IYeAnswerService {
@@ -34,6 +37,8 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
     private StarClient starClient;
     @Resource
     private UserClient userClient;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
     /**
      * 创建一个新的回答
@@ -125,6 +130,11 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
      */
     @Override
     public ApiResult<Integer> tostar(String user_id, String answer_id) {
+        //把要传输的信息打包成一个map对象进行储存
+        Map<String ,String> msg=new HashMap<String,String>();
+        msg.put("user_id", user_id);
+        msg.put("answer_id", answer_id);
+        rabbitTemplate.convertAndSend("yuaner.star","toStar",msg);
         YeStar star=starClient.add(user_id, answer_id).getData();
         YeUser user =userClient.getUserById(user_id).getData();
         YeAnswer answer =yeAnswerMapper.selectById(answer_id);
@@ -134,7 +144,9 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
             answer.setStarNum(answer.getStarNum()+1);
             user.setStaredNum(user.getStaredNum()+1);
             yeAnswerMapper.updateById(answer);
-            userClient.updataStarNum(user);
+            //发送更新赞数的消息过去
+            //这里会将usr进行json序列化，再发送消息
+            rabbitTemplate.convertAndSend("yuaner.star","toUser",user);
             return ApiResult.success(answer.getStarNum(), "点赞成功");
         }
 
@@ -155,7 +167,9 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
             answer.setStarNum(answer.getStarNum()-1);
             user.setStaredNum(user.getStaredNum()-1);
             yeAnswerMapper.updateById(answer);
-            userClient.updataStarNum(user);
+            //发送更新赞数的消息过去
+            //这里会将usr进行json序列化，再发送消息
+            rabbitTemplate.convertAndSend("yuaner.star","toUser",user);
             return ApiResult.success(answer.getStarNum(), "取消点赞成功");
         }else{
             return ApiResult.failed("该回答获赞数目："+answer.getStarNum()+"您并未点赞此回答");
