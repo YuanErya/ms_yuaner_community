@@ -1,6 +1,5 @@
 package com.yuanerya.userservice;
 
-import cn.hutool.core.util.StrUtil;
 import cn.yuanerya.feign.model.entity.YeUser;
 import com.yuanerya.userservice.mapper.YeUserMapper;
 import org.springframework.amqp.core.ExchangeTypes;
@@ -11,7 +10,6 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
 @Component
 public class UpdateStarNumListener {
     @Autowired

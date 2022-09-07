@@ -203,12 +203,17 @@ public class YeQuestionController {
      */
     @GetMapping("/getUserAll")
     public  ApiResult<FootPrintVO> getUserQuestion(@RequestHeader(value = USER_NAME) String userName){
-        String user_id = userClient.getUserByUserName(userName).getData().getId();
-        FootPrintVO footPrintVO=new FootPrintVO();
-        footPrintVO.setQuestion(iYeQuestionService.getMyQuestionsByUserId(user_id));
-        footPrintVO.setAnswer(iYeAnswerService.getMyAnswersByUserId(user_id));
-        footPrintVO.setComment(iYeCommentService.getMyCommentsByUserId(user_id));
-        return ApiResult.success(footPrintVO);
+        YeUser user =userClient.getUserByUserName(userName).getData();
+        if(user!=null){
+            String user_id = user.getId();
+            FootPrintVO footPrintVO=new FootPrintVO();
+            footPrintVO.setQuestion(iYeQuestionService.getMyQuestionsByUserId(user_id));
+            footPrintVO.setAnswer(iYeAnswerService.getMyAnswersByUserId(user_id));
+            footPrintVO.setComment(iYeCommentService.getMyCommentsByUserId(user_id));
+            return ApiResult.success(footPrintVO);
+        }
+        return ApiResult.failed("查无此人");
+
     }
 
     /**

@@ -92,7 +92,11 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
      */
     @Override
     public YeUser getYeUserByUsername(String username) {
-        return yeUserMapper.selectOne(new LambdaQueryWrapper<YeUser>().eq(YeUser::getUsername, username));
+        YeUser user=yeUserMapper.selectOne(new LambdaQueryWrapper<YeUser>().eq(YeUser::getUsername, username));
+        if(user!=null){
+            return user;
+        }
+        return null;
     }
 
     /**
@@ -119,7 +123,7 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
      */
     @Override
     public FootPrintVO getFootprint(String userName) {
-        FootPrintVO footprint = new FootPrintVO();
+        FootPrintVO footprint ;
         footprint = questionClient.getUserAll(userName).getData();
         return footprint;
     }

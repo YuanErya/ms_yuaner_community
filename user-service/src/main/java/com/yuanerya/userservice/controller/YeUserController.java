@@ -127,7 +127,11 @@ public class YeUserController {
     @GetMapping("/getUserByUserName/{user_name}")
     ApiResult<YeUser> getUserByUserName(@PathVariable("user_name")String user_name){
         YeUser user = iYeUserService.getYeUserByUsername(user_name);
-        return ApiResult.success(user);
+        if(user!=null){
+            return ApiResult.success(user);
+        }
+        return ApiResult.failed("查无此人");
+
     }
 
     /**
