@@ -1,4 +1,5 @@
 cn\yuanerya\feign\model\entity\YeAnswer$YeAnswerBuilder.class
+cn\yuanerya\feign\model\vo\QuestionDetailVO.class
 cn\yuanerya\feign\clients\FocusClient.class
 cn\yuanerya\feign\common\exception\ApiAsserts.class
 cn\yuanerya\feign\common\exception\ApiException.class
@@ -16,6 +17,7 @@ cn\yuanerya\feign\model\entity\YeAnswer.class
 cn\yuanerya\feign\model\entity\YeUser.class
 cn\yuanerya\feign\model\entity\YeQuestion.class
 cn\yuanerya\feign\common\api\ApiErrorCode.class
+cn\yuanerya\feign\model\vo\AnswerVO.class
 cn\yuanerya\feign\model\vo\FootPrintVO.class
 cn\yuanerya\feign\model\entity\YeComment.class
 cn\yuanerya\feign\model\entity\YeQuestion$YeQuestionBuilder.class
@@ -26,6 +28,7 @@ cn\yuanerya\feign\model\dto\LoginDTO.class
 cn\yuanerya\feign\clients\QuestionClient.class
 cn\yuanerya\feign\model\dto\AnswerAndCommentDTO.class
 cn\yuanerya\feign\model\entity\YeFocus.class
+cn\yuanerya\feign\model\dto\ModifyUserDTO.class
 cn\yuanerya\feign\common\api\ApiResult.class
 cn\yuanerya\feign\common\exception\GlobalExceptionHandler.class
 cn\yuanerya\feign\jwt\JwtUtil.class

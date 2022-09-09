@@ -17,8 +17,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class YeQuestion implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 主键
      */

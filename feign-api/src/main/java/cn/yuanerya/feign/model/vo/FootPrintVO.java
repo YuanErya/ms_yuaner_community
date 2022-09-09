@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FootPrintVO implements Serializable {
-    private static final long serialVersionUID = -261082150965211545L;
     /**
      * 储存本人所发布的全部问题
      */

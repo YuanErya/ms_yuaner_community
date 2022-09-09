@@ -131,10 +131,6 @@ public class IYeAnswerServiceImpl extends ServiceImpl<YeAnswerMapper, YeAnswer> 
     @Override
     public ApiResult<Integer> tostar(String user_id, String answer_id) {
         //把要传输的信息打包成一个map对象进行储存
-        Map<String ,String> msg=new HashMap<String,String>();
-        msg.put("user_id", user_id);
-        msg.put("answer_id", answer_id);
-        rabbitTemplate.convertAndSend("yuaner.star","toStar",msg);
         YeStar star=starClient.add(user_id, answer_id).getData();
         YeUser user =userClient.getUserById(user_id).getData();
         YeAnswer answer =yeAnswerMapper.selectById(answer_id);

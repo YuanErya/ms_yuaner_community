@@ -5,3 +5,4 @@ com\yuanerya\userservice\service\IYeUserService.class
 com\yuanerya\userservice\UserServiceApplication.class
 com\yuanerya\userservice\controller\YeUserController.class
 com\yuanerya\userservice\Config\MPConfig.class
+com\yuanerya\userservice\listener\UpdateStarNumListener.class

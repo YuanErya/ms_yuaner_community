@@ -2,6 +2,7 @@ package com.yuanerya.userservice.service;
 
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.LoginDTO;
+import cn.yuanerya.feign.model.dto.ModifyUserDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
@@ -23,6 +24,14 @@ public interface IYeUserService extends IService<YeUser> {
      * @return
      */
     String login(LoginDTO dto);
+
+    /**
+     * 修改用户的信息
+     * @param dto
+     * @return
+     */
+
+    ApiResult modifyUser(String user_id,ModifyUserDTO dto);
 
     /**
      * 根据用户名获取到用户

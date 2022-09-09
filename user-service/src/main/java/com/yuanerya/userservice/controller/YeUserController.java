@@ -3,6 +3,7 @@ package com.yuanerya.userservice.controller;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.jwt.JwtUtil;
 import cn.yuanerya.feign.model.dto.LoginDTO;
+import cn.yuanerya.feign.model.dto.ModifyUserDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
 import cn.yuanerya.feign.model.entity.YeUser;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
@@ -73,6 +74,18 @@ public class YeUserController {
     public ApiResult<FootPrintVO> getFootprint(@RequestHeader(value = USER_NAME) String userName) {
 
         return ApiResult.success(iYeUserService.getFootprint(userName));
+    }
+
+    /**
+     * 修改用户信息
+     * @param dto
+     * @return
+     */
+    @PutMapping("/modifyUser")
+    public ApiResult modifyUser(@Valid @RequestBody ModifyUserDTO dto,
+                                @RequestHeader(value = USER_NAME) String userName){
+        String user_id = iYeUserService.getYeUserByUsername(userName).getId();
+        return iYeUserService.modifyUser(user_id,dto);
     }
 
 

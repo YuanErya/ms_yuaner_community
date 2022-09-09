@@ -2,15 +2,14 @@ package com.yuanerya.userservice.service.impl;
 
 import cn.yuanerya.feign.clients.FocusClient;
 import cn.yuanerya.feign.clients.QuestionClient;
-import cn.yuanerya.feign.common.api.ApiErrorCode;
 import cn.yuanerya.feign.common.api.ApiResult;
 import cn.yuanerya.feign.model.dto.LoginDTO;
+import cn.yuanerya.feign.model.dto.ModifyUserDTO;
 import cn.yuanerya.feign.model.dto.RegisterDTO;
 import cn.yuanerya.feign.model.entity.*;
 import cn.yuanerya.feign.model.vo.FootPrintVO;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.yuanerya.feign.common.exception.ApiAsserts;
 import cn.yuanerya.feign.jwt.JwtUtil;
 import com.yuanerya.userservice.mapper.YeUserMapper;
 
@@ -43,8 +42,8 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
         LambdaQueryWrapper<YeUser> lqw = new LambdaQueryWrapper<>();
         //判断名字和邮箱
         lqw.eq(YeUser::getUsername, dto.getName()).or().eq(YeUser::getEmail, dto.getEmail());
-        YeUser yeUser = baseMapper.selectOne(lqw);
-        if (yeUser != null) {
+        List<YeUser> yeUser = baseMapper.selectList(lqw);
+        if (yeUser.size() != 0) {
             return ApiResult.failed("账号或邮箱已存在");
         }
         YeUser registerUser = YeUser.builder()
@@ -81,6 +80,25 @@ public class IYeUserServiceImpl extends ServiceImpl<YeUserMapper, YeUser> implem
             return null;
         }
         return "Authorization:" + token;
+    }
+
+    /**
+     * 对用户的信息进行修改
+     * @param user_id
+     * @param dto
+     * @return
+     */
+    @Override
+    public ApiResult modifyUser(String user_id, ModifyUserDTO dto) {
+        try{
+        YeUser user =yeUserMapper.selectById(user_id);
+        user.setAlias(dto.getAlias());
+        user.setIntroduction(dto.getIntroduction());
+        user.setModifyTime(new Date());
+        yeUserMapper.updateById(user);}catch(Exception e){
+            return ApiResult.failed("修改失败！");
+        }
+        return ApiResult.success("修改成功！");
     }
 
 

@@ -10,3 +10,4 @@ com\yuanerya\questionservice\service\IYeCommentService.class
 com\yuanerya\questionservice\service\impl\IYeQuestionServiceImpl.class
 com\yuanerya\questionservice\service\impl\IYeCommentServiceImpl.class
 com\yuanerya\questionservice\interceptor\GateWayInterceptor.class
+com\yuanerya\questionservice\Config\MQFanoutConfig.class

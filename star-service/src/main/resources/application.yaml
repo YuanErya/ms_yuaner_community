@@ -26,3 +26,5 @@ spring:
     username: yuaner
     password: thf20021219
     virtual-host: /
+    publisher-confirm-type: correlated
+    publisher-returns: true

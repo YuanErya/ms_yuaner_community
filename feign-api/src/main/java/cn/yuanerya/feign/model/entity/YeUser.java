@@ -19,7 +19,6 @@ import java.util.Date;
 @AllArgsConstructor
 @Accessors(chain = true)
 public class YeUser implements Serializable {
-    private static final long serialVersionUID = -5051120337175047163L;
 
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;

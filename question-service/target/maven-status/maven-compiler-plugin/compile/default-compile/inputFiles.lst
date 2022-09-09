@@ -10,4 +10,5 @@ E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question
 E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question-service\src\main\java\com\yuanerya\questionservice\service\IYeQuestionService.java
 E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question-service\src\main\java\com\yuanerya\questionservice\interceptor\GateWayInterceptor.java
 E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question-service\src\main\java\com\yuanerya\questionservice\service\IYeCommentService.java
+E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question-service\src\main\java\com\yuanerya\questionservice\Config\MQFanoutConfig.java
 E:\MyWork\JAVA\蓝山\BigHomework改写微服务版\ms_yuaner_community\question-service\src\main\java\com\yuanerya\questionservice\service\IYeAnswerService.java

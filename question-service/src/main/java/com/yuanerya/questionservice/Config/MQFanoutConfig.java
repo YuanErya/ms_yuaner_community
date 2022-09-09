@@ -6,7 +6,7 @@ import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-//绑定交换机和队列
+//绑定交换机和队列,弃用
 //@Configuration
 public class MQFanoutConfig {
     //@Bean

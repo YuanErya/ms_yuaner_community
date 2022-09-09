@@ -4,3 +4,4 @@ com\yuanerya\starservice\controller\YeStarController.class
 com\yuanerya\starservice\interceptor\GateWayInterceptor.class
 com\yuanerya\starservice\StarServiceApplication.class
 com\yuanerya\starservice\service\IYeStarService.class
+com\yuanerya\starservice\listener\AddStarListener.class

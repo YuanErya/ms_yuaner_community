@@ -132,7 +132,7 @@ public class AuthorizeFilter implements GlobalFilter {
     public static Mono<Void> fail(ServerWebExchange exchange) {
         JSONObject resultJson = new JSONObject();
         resultJson.put("code", 401);
-        resultJson.put("message", "请重新登陆授权");
+        resultJson.put("message", "Please re-log in and authorize!");
         resultJson.put("status", 401);
         ServerHttpResponse response = exchange.getResponse();
         byte[] bytes = JSONObject.toJSONBytes(resultJson);

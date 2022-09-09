@@ -14,7 +14,6 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class QuestionVO implements Serializable {
-    private static final long serialVersionUID = -261082150965211545L;
 
     /**
      * 问题ID
